@@ -9,7 +9,7 @@
     <PackageVersion Include="NineP.Server" Version="0.4.0" />
 
     <!-- The server logs through ILogger; without one it is silent about handlers that threw. -->
-    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.3" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.12" />
   </ItemGroup>
 
   <ItemGroup Label="assembly inspection; never loads or runs the assemblies it reads">
