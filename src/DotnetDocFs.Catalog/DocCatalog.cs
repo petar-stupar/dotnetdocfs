@@ -588,5 +588,10 @@ public sealed class DocCatalog : IDisposable
         }
 
         _areas.Clear();
+
+        // The areas above are the ones this catalog still owns. An area a refresh retired is not
+        // among them, and a client that held a fid into one can have reopened its metadata
+        // context since; nothing else would ever close that.
+        Internal.Metadata.AssemblySetReader.CloseAll();
     }
 }

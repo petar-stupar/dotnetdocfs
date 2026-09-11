@@ -72,10 +72,7 @@ public class CatalogTests : IDisposable
                 {
                     checked_++;
 
-                    string at = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(from)!, href))
-                        .Replace('\\', '/');
-
-                    if (!exists.Contains(at))
+                    if (!exists.Contains(Resolve(from, href)))
                     {
                         broken.Add($"{from} -> {href}");
                     }
@@ -210,6 +207,34 @@ public class CatalogTests : IDisposable
     /// A spread of namespaces rather than the first few: every distinct top-level prefix, so that
     /// <c>System</c> is always in it whatever else the machine has installed.
     /// </summary>
+    /// <summary>
+    /// <paramref name="href"/> read as a client would read it: relative to the directory holding
+    /// <paramref name="from"/>, in the tree's own path syntax. Not <see cref="Path"/>, which is
+    /// the host's: on Windows it answers a rooted tree path with a drive letter and a backslash,
+    /// and every link in the tree then looks broken.
+    /// </summary>
+    private static string Resolve(string from, string href)
+    {
+        var at = new List<string>(from.Split('/')[..^1]);
+
+        foreach (string step in href.Split('/'))
+        {
+            if (step == "..")
+            {
+                if (at.Count > 1)
+                {
+                    at.RemoveAt(at.Count - 1);
+                }
+            }
+            else if (step is not ("." or ""))
+            {
+                at.Add(step);
+            }
+        }
+
+        return string.Join('/', at);
+    }
+
     private static IEnumerable<DocDirectory> Sample(DocDirectory framework) =>
         framework.Children.OfType<DocDirectory>()
             .GroupBy(area => area.Name.Split('.')[0], StringComparer.Ordinal)

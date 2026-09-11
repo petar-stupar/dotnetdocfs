@@ -99,6 +99,20 @@ internal sealed class AssemblySetReader : IDisposable
     internal void Release() => Close();
 
     /// <summary>
+    /// Closes every context open in this process, so that disposing the catalog leaves no file
+    /// handle behind.
+    /// </summary>
+    /// <remarks>
+    /// The catalog cannot reach these one by one. An area retired by <c>refresh</c> is no longer
+    /// owned by it, and a client still holding a fid into that area makes its reader open a
+    /// context again — after the catalog has already disposed everything it owns. Closing is
+    /// safe at any moment, which is what makes reaching them through the open set reasonable:
+    /// the next call opens a new context. On Windows this is the difference between a directory
+    /// that can be deleted after the catalog is gone and one that cannot.
+    /// </remarks>
+    internal static void CloseAll() => Open.Clear();
+
+    /// <summary>
     /// Closes the context, keeping the reader usable: the next call opens a new one.
     /// </summary>
     /// <remarks>
