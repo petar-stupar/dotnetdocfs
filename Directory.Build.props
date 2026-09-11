@@ -1,0 +1,21 @@
+<Project>
+
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisLevel>latest-Recommended</AnalysisLevel>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <Version>0.1.0</Version>
+  </PropertyGroup>
+
+  <!-- The tree this repository serves is generated, never vendored: dotnetdocfs ships no
+       documentation. Every page it serves is rendered at request time from the reference packs,
+       the NuGet cache and the assemblies /ctl is told about, all of which belong to the machine
+       it runs on. Nothing in the build enforces that, so this is a comment rather than a
+       property no target reads. -->
+
+</Project>

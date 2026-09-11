@@ -1,0 +1,25 @@
+version: 2
+updates:
+  - package-ecosystem: nuget
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    groups:
+      # Nothing here is published as a package, so the test and tooling dependencies that no
+      # consumer ever sees can move together.
+      test-and-tooling:
+        patterns:
+          - "xunit*"
+          - "Microsoft.Testing.*"
+          - "Microsoft.NET.Test.Sdk"
+    labels:
+      - dependencies
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    labels:
+      - dependencies

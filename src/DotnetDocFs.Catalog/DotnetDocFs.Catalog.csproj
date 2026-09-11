@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>DotnetDocFs.Catalog</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup Label="assembly inspection">
+    <!-- MetadataLoadContext resolves and renders a type's members without ever loading the
+         assembly into a runnable context: no static constructor, no module initializer, no code
+         from an inspected assembly runs in this process. That property is why /ctl can accept a
+         path from a caller at all; the README's "What /ctl can and cannot do" says the rest. -->
+    <PackageReference Include="System.Reflection.MetadataLoadContext" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="DotnetDocFs.Catalog.Tests" />
+  </ItemGroup>
+
+</Project>
