@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup Label="the 9P server this filesystem is built on">
-    <PackageVersion Include="NineP.Server" Version="0.4.0" />
+    <PackageVersion Include="NineP.Server" Version="0.4.1" />
 
     <!-- The server logs through ILogger; without one it is silent about handlers that threw. -->
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.12" />

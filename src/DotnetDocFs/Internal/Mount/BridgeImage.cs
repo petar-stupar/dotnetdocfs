@@ -68,7 +68,17 @@ internal static class BridgeImage
         # and so cannot write /ctl. access=any lets Samba reach the mount as the unprivileged user
         # it serves files with, while the 9P identity stays the one above. The tree's own
         # permissions still refuse every write but /ctl.
-        mount -t 9p -o "trans=tcp,port=$DOTNETDOC_PORT,version=9p2000.L,msize=262144,cache=loose,uname=root,dfltuid=0,access=any" "$ip" /srv/docs
+        #
+        # cache=none because every caching mode pins one 9P fid per cached dentry for as long as
+        # the dentry cache holds it, access=any puts the whole container on a single connection and
+        # so a single fid table, and the server caps fids per connection at 65536. The tree has
+        # 72,282 directories at type depth alone, so one recursive find walked past the cap and
+        # wedged the mount: every open after it was refused ENFILE, which arrives here as "Too many
+        # open files", and nothing recovered it short of a remount — the VM never prunes a dentry
+        # cache it has the memory to keep. Uncached dentries are deleted on release and the fid is
+        # clunked with them. What that costs: find -maxdepth 4 over SMB takes 168 s and answers all
+        # 72,282 directories without one error.
+        mount -t 9p -o "trans=tcp,port=$DOTNETDOC_PORT,version=9p2000.L,msize=262144,cache=none,uname=root,dfltuid=0,access=any" "$ip" /srv/docs
 
         echo "dotnetdocfs-bridge: exporting /srv/docs over SMB"
         exec smbd --foreground --no-process-group --debug-stdout
