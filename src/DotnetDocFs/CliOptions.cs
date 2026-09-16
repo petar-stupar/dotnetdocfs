@@ -48,6 +48,9 @@ internal sealed record CliOptions
     /// <summary>Print usage and stop.</summary>
     internal bool Help { get; init; }
 
+    /// <summary>Print the version of this program and of the 9P library, and stop.</summary>
+    internal bool Version { get; init; }
+
     /// <summary>How this run should mount, given what was asked for and what the machine is.</summary>
     /// <remarks>
     /// The path is made absolute here and nowhere else. The mount table records absolute paths, so
@@ -190,6 +193,7 @@ internal sealed record CliOptions
             options = name switch
             {
                 "--help" or "-h" => options with { Help = true },
+                "--version" => options with { Version = true },
                 "--listen" => options with { Listen = Value() },
                 "--mount" => options with { Mount = true },
                 "--mount-docker" => options with { Mount = true, Docker = true },
@@ -236,6 +240,8 @@ internal sealed record CliOptions
                                       tree; /ctl is open by default
           --log-requests              report each kind of 9P request the first time it
                                       arrives, and every kind of refusal
+          --version                   print this program's version and the version of the
+                                      9P library it is built against, and stop
           --help, -h                  print this and stop
 
         environment, read only when the matching flag is absent:

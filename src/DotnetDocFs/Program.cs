@@ -67,6 +67,15 @@ internal static class Program
             return 0;
         }
 
+        // Before Validated(), as --help is: asking what this binary is cannot be refused for a
+        // combination of flags that has nothing to do with the answer.
+        if (options.Version)
+        {
+            Console.WriteLine(Versions.Report);
+
+            return 0;
+        }
+
         options = options.Validated();
 
         if (options.Unmount)

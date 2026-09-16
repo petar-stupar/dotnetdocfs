@@ -130,6 +130,7 @@ dotnetdoc                      serve over 9P and print the address
 dotnetdoc --mount              serve, then mount it at ~/mnt/dotnetdocfs
 dotnetdoc --mount --path DIR   mount somewhere else
 dotnetdoc --unmount            unmount and remove the bridge
+dotnetdoc --version            this program's version and the 9P library's
 dotnetdoc --help               every flag
 ```
 
