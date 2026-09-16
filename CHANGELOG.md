@@ -8,6 +8,8 @@ refuses a tag whose version has no section here.
 
 ## [Unreleased]
 
+## [0.1.1] — 2026-09-16
+
 ### Fixed
 
 - **A recursive walk no longer wedges the mount.** The bridge's 9P mount and the direct Linux one
@@ -17,6 +19,11 @@ refuses a tag whose version has no section here.
   depth ran past the cap and every open after it was refused `Too many open files` until the mount
   was remade. Uncached dentries are released on the spot and the fid with them; `find -maxdepth 4`
   over the SMB mount now answers all 72,282 directories in 168 s without an error.
+
+### Changed
+
+- `NineP.Server` 0.4.0 → 0.4.1, which carries the mount guidance this fix came from, and the
+  test-and-tooling group moves forward. Nothing in the library behaves differently.
 
 ## [0.1.0] — 2026-09-11
 
@@ -76,5 +83,6 @@ refuses a tag whose version has no section here.
   mount. There is no authentication on the tree, so the address it binds is the whole of the
   access control.
 
-[Unreleased]: https://github.com/petar-stupar/dotnetdocfs/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/petar-stupar/dotnetdocfs/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/petar-stupar/dotnetdocfs/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/petar-stupar/dotnetdocfs/releases/tag/v0.1.0
