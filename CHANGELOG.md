@@ -8,6 +8,24 @@ refuses a tag whose version has no section here.
 
 ## [Unreleased]
 
+## [0.1.2] — 2026-09-16
+
+### Added
+
+- **`--version`** reports this program's version and the version of the 9P library under it:
+
+  ```text
+  dotnetdoc 0.1.2
+  NineP.Server 0.4.1
+  NineP.Protocol 0.4.1
+  ```
+
+  Read from the loaded assemblies rather than from a constant. A published build carries the
+  library inside it, so which `NineP` a binary uses cannot be answered from the repository once
+  the binary has left it — which is when the question gets asked. Printed before the flag
+  combinations are checked, as `--help` is: asking what a binary is should not be refused over
+  something unrelated to the answer.
+
 ## [0.1.1] — 2026-09-16
 
 ### Fixed
@@ -83,6 +101,7 @@ refuses a tag whose version has no section here.
   mount. There is no authentication on the tree, so the address it binds is the whole of the
   access control.
 
-[Unreleased]: https://github.com/petar-stupar/dotnetdocfs/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/petar-stupar/dotnetdocfs/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/petar-stupar/dotnetdocfs/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/petar-stupar/dotnetdocfs/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/petar-stupar/dotnetdocfs/releases/tag/v0.1.0
