@@ -8,6 +8,16 @@ refuses a tag whose version has no section here.
 
 ## [Unreleased]
 
+### Fixed
+
+- **A recursive walk no longer wedges the mount.** The bridge's 9P mount and the direct Linux one
+  both use `cache=none` now: a caching mode pins one fid per cached dentry for as long as the
+  dentry cache holds it, the whole mount shares one connection and one fid table, and the server
+  caps fids per connection at 65536 — so a `find` or `grep -r` over the 72,282 directories at type
+  depth ran past the cap and every open after it was refused `Too many open files` until the mount
+  was remade. Uncached dentries are released on the spot and the fid with them; `find -maxdepth 4`
+  over the SMB mount now answers all 72,282 directories in 168 s without an error.
+
 ## [0.1.0] — 2026-09-11
 
 ### Added

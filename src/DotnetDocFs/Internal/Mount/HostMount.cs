@@ -35,7 +35,10 @@ internal static class HostMount
             // writable file here. What keeps the documentation read-only is the tree's own
             // permissions, which the server enforces. uname and dfltuid pin the attach identity
             // to the owner the server reports, without which /ctl cannot be written at all.
-            "-o", $"trans=tcp,port={settings.NinePPort},version=9p2000.L,msize=262144,cache=loose,uname=root,dfltuid=0,access=any",
+            // cache=none for the reason spelled out in BridgeImage: a caching mode pins a fid per
+            // cached dentry, and this tree has more directories than the server's per-connection
+            // fid cap, so a recursive walk wedges the mount with ENFILE until it is remade.
+            "-o", $"trans=tcp,port={settings.NinePPort},version=9p2000.L,msize=262144,cache=none,uname=root,dfltuid=0,access=any",
             "127.0.0.1", settings.MountPath,
         ];
 

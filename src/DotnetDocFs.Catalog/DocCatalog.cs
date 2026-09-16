@@ -98,9 +98,9 @@ public sealed class DocCatalog : IDisposable
 
     /// <summary>
     /// How many times this catalog has been refreshed. A 9P layer puts it in the qid version, so
-    /// that a client caching on the qid — which is what <c>cache=loose</c> does — is told that
-    /// what it holds for a path is no longer what the path holds. Not called Version, which
-    /// inside this class would shadow <see cref="System.Version"/>.
+    /// that a client caching on the qid — which is what a mount at <c>cache=loose</c> does — is
+    /// told that what it holds for a path is no longer what the path holds. Not called Version,
+    /// which inside this class would shadow <see cref="System.Version"/>.
     /// </summary>
     public uint Revision => (uint)_generation.Current;
 

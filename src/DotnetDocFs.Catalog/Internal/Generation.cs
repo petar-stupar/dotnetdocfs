@@ -8,11 +8,12 @@ namespace DotnetDocFs.Catalog.Internal;
 /// <para>
 /// The alternative — walking the tree and clearing each directory — reaches only the directories
 /// the walk can find, and those are not the ones that matter. A 9P client holds a fid per
-/// directory it has walked into, and a kernel mount with <c>cache=loose</c> holds them for as long
-/// as its dentry cache does. Each fid is a handler holding the <see cref="DocDirectory"/> object
-/// it was walked to, so invalidating from the root left every client that had already looked at
-/// <c>/docs/packages</c> looking at the old entries: <c>echo refresh &gt; ctl</c> did nothing a
-/// mounted reader could see, which is the one operational promise the README makes about it.
+/// directory it has walked into, and a kernel mount in any caching mode — <c>cache=loose</c>
+/// among them — holds them for as long as its dentry cache does. Each fid is a handler holding
+/// the <see cref="DocDirectory"/> object it was walked to, so invalidating from the root left
+/// every client that had already looked at <c>/docs/packages</c> looking at the old entries:
+/// <c>echo refresh &gt; ctl</c> did nothing a mounted reader could see, which is the one
+/// operational promise the README makes about it.
 /// </para>
 /// <para>
 /// A counter reaches them because the object checks it rather than being told. Node keys do not
