@@ -36,6 +36,11 @@ writing a kernel module: the server is a tree of small handlers, and the kernel 
 /docs/ingested/<assembly>/...                   whatever /ctl was told about
 ```
 
+`SKILL.md` names the mountpoint outright when this server was told one — either because it did
+the mounting, or because `--path` said where you would. Otherwise it writes `<mount>` for you to
+replace, because a path nobody stated would be a guess, and a skill naming a directory that is not
+there is worse than one that asks to be filled in.
+
 Pages are [Open Knowledge Format](https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf):
 markdown with YAML frontmatter, an `index.md` at every level for progressive disclosure, and
 cross-links as ordinary relative paths.
@@ -128,7 +133,7 @@ dotnet publish src/DotnetDocFs -c Release -r osx-arm64 --self-contained true \
 ```text
 dotnetdoc                      serve over 9P and print the address
 dotnetdoc --mount              serve, then mount it at ~/mnt/dotnetdocfs
-dotnetdoc --mount --path DIR   mount somewhere else
+dotnetdoc --mount --path DIR   mount somewhere else, and name it in the served skill
 dotnetdoc --unmount            unmount and remove the bridge
 dotnetdoc --version            this program's version and the 9P library's
 dotnetdoc --help               every flag
