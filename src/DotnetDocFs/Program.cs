@@ -113,6 +113,12 @@ internal static class Program
             DotnetRoot = options.DotnetRoot,
             PackageRoot = options.PackageRoot,
             AllowIngest = allowIngest,
+
+            // Only when somebody has said where the tree will be: this process is mounting it, or
+            // --path named the place they will mount it themselves. Passing the default otherwise
+            // would put a directory that is not there into the skill an agent follows, which is
+            // worse than the placeholder it replaces.
+            MountPath = mounting || options.MountPath is not null ? mount.MountPath : null,
         });
 
         if (catalog.TargetFramework is null)

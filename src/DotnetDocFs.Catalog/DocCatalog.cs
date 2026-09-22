@@ -162,7 +162,7 @@ public sealed class DocCatalog : IDisposable
         {
             new TextPage("index.md", DocNodeKind.Catalog, "/index.md", RenderRootIndex),
             new LazyDirectory("docs", DocNodeKind.Area, "/docs", BuildDocs, _generation),
-            Skills.Directory(_builtAt),
+            Skills.Directory(_builtAt, _options.MountPath),
         };
 
         if (_options.AllowIngest)

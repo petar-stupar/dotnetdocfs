@@ -8,6 +8,20 @@ refuses a tag whose version has no section here.
 
 ## [Unreleased]
 
+## [0.1.3] — 2026-09-22
+
+### Changed
+
+- **The served `SKILL.md` names the mountpoint** when this server was told one — because it did
+  the mounting, or because `--path` said where you would mount it yourself. Otherwise it keeps
+  writing `<mount>` for you to replace: a path nobody stated would be a guess, and a skill naming
+  a directory that is not there is worse than one that asks to be filled in. `--path` now means
+  something without `--mount` for exactly this. If the agent reading the skill is in a different
+  filesystem namespace from the server — a container that bind-mounts the host's mountpoint
+  elsewhere — the path is still the server's, and there is no flag for that yet.
+- Only `<mount>` is substituted. `<namespace>`, `<Type>`, `<version>` and the rest of the skill's
+  placeholders are ones a reader fills in, and they are left alone.
+
 ## [0.1.2] — 2026-09-16
 
 ### Added
@@ -101,7 +115,8 @@ refuses a tag whose version has no section here.
   mount. There is no authentication on the tree, so the address it binds is the whole of the
   access control.
 
-[Unreleased]: https://github.com/petar-stupar/dotnetdocfs/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/petar-stupar/dotnetdocfs/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/petar-stupar/dotnetdocfs/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/petar-stupar/dotnetdocfs/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/petar-stupar/dotnetdocfs/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/petar-stupar/dotnetdocfs/releases/tag/v0.1.0

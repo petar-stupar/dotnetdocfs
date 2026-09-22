@@ -67,6 +67,21 @@ public class CliOptionsTests
     public void TheMountPathIsMadeAbsolute() =>
         Assert.True(Path.IsPathRooted(CliOptions.Parse(["--path", "relative/here"]).MountSettings.MountPath));
 
+    /// <summary>
+    /// Mounting resolves a path nobody gave, but the served skill must not: it prints the path it
+    /// is given, and a default nobody stated would send an agent to a directory that is not
+    /// there. So the two readings are kept apart — <c>MountSettings</c> always has one, and
+    /// <c>MountPath</c> only when somebody said.
+    /// </summary>
+    [Fact]
+    public void APathIsOnlyStatedWhenItWasGiven()
+    {
+        Assert.Null(CliOptions.Parse([]).MountPath);
+        Assert.True(Path.IsPathRooted(CliOptions.Parse([]).MountSettings.MountPath));
+
+        Assert.Equal("/mnt/docs", CliOptions.Parse(["--path", "/mnt/docs"]).MountPath);
+    }
+
     [Fact]
     public void ServingOffLoopbackWithTheControlFileOpenIsRefused() =>
         Assert.Throws<CliUsageException>(

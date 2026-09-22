@@ -10,7 +10,9 @@ namespace DotnetDocFs.Catalog.Internal.Nodes;
 internal static class Skills
 {
     /// <summary>The <c>/skills</c> directory.</summary>
-    internal static LazyDirectory Directory(DateTimeOffset builtAt) =>
+    /// <param name="builtAt">When the tree was built, for the pages' frontmatter.</param>
+    /// <param name="mountPath">Where this tree can be read from, or null when nobody has said.</param>
+    internal static LazyDirectory Directory(DateTimeOffset builtAt, string? mountPath) =>
         new LazyDirectory("skills", DocNodeKind.Skill, "/skills", () =>
         [
             new TextPage("index.md", DocNodeKind.Skill, "/skills/index.md", () => Index(builtAt)),
@@ -22,12 +24,16 @@ internal static class Skills
                     "index.md",
                     DocNodeKind.Skill,
                     "/skills/dotnet-api-docs/index.md",
-                    () => SkillIndex(builtAt)),
-                new TextPage("SKILL.md", DocNodeKind.Skill, "/skills/dotnet-api-docs/SKILL.md", Navigation),
+                    () => SkillIndex(builtAt, mountPath)),
+                new TextPage(
+                    "SKILL.md",
+                    DocNodeKind.Skill,
+                    "/skills/dotnet-api-docs/SKILL.md",
+                    () => Navigation(mountPath)),
             ]),
         ]);
 
-    private static string SkillIndex(DateTimeOffset builtAt)
+    private static string SkillIndex(DateTimeOffset builtAt, string? mountPath)
     {
         var builder = new StringBuilder();
 
@@ -46,7 +52,14 @@ internal static class Skills
 
             - [SKILL.md](SKILL.md) — the skill itself. Copy it into your project's skills
               directory; nothing here runs from the mount.
+
             """);
+
+        // A blank line first: a raw string literal drops the last line break before its closing
+        // delimiter, so the one above leaves this sentence abutting the bullet it follows.
+        builder.Append(mountPath is null
+            ? "\nThe paths in it are written `<mount>`; replace that with where this tree is\nmounted.\n"
+            : "\nThe paths in it are already the ones on this machine, so copy it as it is.\n");
 
         return builder.ToString();
     }
@@ -75,7 +88,23 @@ internal static class Skills
         return builder.ToString();
     }
 
-    private static string Navigation()
+    /// <summary>
+    /// The skill an agent harness reads, with <paramref name="mountPath"/> written into it where
+    /// it is known.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This is the one page in the tree meant to be copied *out* of it and followed from outside,
+    /// which is why it alone is written with a placeholder. Every other page is read through the
+    /// mount, where a path relative to the tree is the right way to name a position in it.
+    /// </para>
+    /// <para>
+    /// The substitution is <c>&lt;mount&gt;</c> and nothing else. <c>&lt;namespace&gt;</c>,
+    /// <c>&lt;Type&gt;</c>, <c>&lt;version&gt;</c> and the rest are placeholders a reader is meant
+    /// to fill in themselves, and a general template pass would eat them.
+    /// </para>
+    /// </remarks>
+    private static string Navigation(string? mountPath)
     {
         var builder = new StringBuilder();
 
@@ -168,6 +197,20 @@ internal static class Skills
             executed.
             """);
 
-        return builder.ToString();
+        return mountPath is null
+            ? builder.ToString()
+            : builder.Replace("<mount>", At(mountPath)).ToString();
     }
+
+    /// <summary>
+    /// A mount path as it is written into the skill: one trailing separator taken off, so
+    /// <c>&lt;mount&gt;/docs</c> cannot become <c>//docs</c>.
+    /// </summary>
+    /// <remarks>
+    /// The separators themselves are left as they came. Translating them would be guessing which
+    /// side of a namespace boundary the reader is on, which is the mistake this substitution
+    /// exists to avoid.
+    /// </remarks>
+    private static string At(string mountPath) =>
+        mountPath.TrimEnd('/', '\\') is { Length: > 0 } trimmed ? trimmed : mountPath;
 }

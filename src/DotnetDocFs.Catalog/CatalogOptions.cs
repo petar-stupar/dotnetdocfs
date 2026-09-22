@@ -26,6 +26,18 @@ public sealed record CatalogOptions
     public string? PackageRoot { get; init; }
 
     /// <summary>
+    /// Where this tree can be read from, or null when nobody has said.
+    /// </summary>
+    /// <remarks>
+    /// A caption and nothing more: the served skill prints it in place of a placeholder, because
+    /// that page is the one meant to be copied out of the tree and followed from outside it.
+    /// Nothing in here acts on it, and null rather than a default because a path nobody stated is
+    /// a guess, and a skill naming a directory that is not there is worse than one that asks to
+    /// be filled in.
+    /// </remarks>
+    public string? MountPath { get; init; }
+
+    /// <summary>
     /// Whether <c>/ctl</c> accepts writes. False serves a strictly read-only tree.
     /// </summary>
     public bool AllowIngest { get; init; } = true;
